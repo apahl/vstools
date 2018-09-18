@@ -1,0 +1,5 @@
+bin/
+.vscode/
+go.sum
+*.tgz
+*.zip
