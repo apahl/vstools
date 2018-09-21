@@ -212,7 +212,7 @@ Cd into that directory.
 Before the reports can be generated, 2D images of the ligands and the ligand / active site binding modes have to be generated.  
 Call `smina_preprep` to accomplish that.  
 The `scores.txt` can be edited before generating the reports. The title and the text lines before the ligand score data can be changed, this will be reflected in the reports. At the end of each ligand score line, a remark can be entered, separated from the last value in the line by <tab>. These remarks will also be shown in the reports.
-For performance reasons, each report file contains a maximum number of 15 ligands. The required number of reports will automatically generated.
+For performance reasons, each report file contains a maximum number of 15 ligands. The required number of reports will be automatically generated.
 Call `smina_report` to generate the reports.  
 The reports are written in the current dir, but can be moved anywhere after the generation, all required data is statically contained in the HTML files.
 
