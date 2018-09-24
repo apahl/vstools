@@ -41,7 +41,7 @@ const (
 <td><img src="data:image/png;base64,{{.PNGb64}}" alt="Mol"/></td>
 <td>
 	<div style="height: 300px; width: 300px; position: relative;" class='viewer_3Dmoljs' data-type="pdb" data-element="pdbdata-{{.Idx}}"
-		data-backgroundcolor='0x000000' data-style='stick:radius=0.15' data-select1='resn:LIG' data-style1='stick:colorscheme=cyanCarbon'></div>
+		data-backgroundcolor='0x000000' data-style='stick:radius=0.15' data-select1='resn:LIG' data-style1='stick:colorscheme=cyanCarbon' data-select2='resn:HOH' data-style2='sphere:radius~0.4'></div>
 </td>
 <td style="text-align: left;">{{.Remark}}</td>
 </tr>
