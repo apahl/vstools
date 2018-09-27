@@ -1,0 +1,4 @@
+github.com/apahl/utls v0.1.0 h1:OFRVPE8HLStCWMjj/R35UWEGKVQ7O/RJyUQZ4xyHgEA=
+github.com/apahl/utls v0.1.0/go.mod h1:rd/r/dNoloZz4Pw/qJ055VDYOBsNT8Zc8oVu0SJZtvQ=
+github.com/korovkin/limiter v0.0.0-20170610225302-6b837f5fd496 h1:bS17I5YOpfCP6KS7aFOm0/LkZn6J2M/g41+O6LzvtUY=
+github.com/korovkin/limiter v0.0.0-20170610225302-6b837f5fd496/go.mod h1:bttpekv26JrhFNCYlxnxn8a1jw8Q0gi8iHe0RC4JLBg=

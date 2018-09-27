@@ -112,59 +112,23 @@ done
 
 on an IBM LSF Platform.
 
-#### Script
+see [vs_screen.sh](scripts/vs_screen.sh) script.
 
-vs_screen.sh:
+The screening job can be started with:
 
-```Bash
-#!/bin/bash -l
-# usage: bsub <bsub options> ./vs_screen.sh <subdir>
+    bsub -J "vsscr[1-200]" -w 'numended(<prev. job-id>, 150)' -W "30:00" -R scratch -o /home/users/xxx/vs/jobout/vsscr_%J-%I.txt -e /home/users/xxx/vs/jobout' ./vs_screen.sh 1  # ligand set subdir
 
-# all ligand and receptor files are expected to be in .pdbqt format
-REC=clpp
-REC_DIR=/scratch/xxx/vs/rec
-REF_LIG=$REC_DIR/lig   # reference ligand for autobox (full path without extension)
-LIGANDS=3d_vs
+The call distributes the job over 200 tasks and starts automatically when 150 tasks of a previous screening job have ended (remove that option when the first screening is started and no other jobs are running).
 
-NUM_JOBS=200
+## Post-processing
 
-SUB_DIR=$1  # ligand set subdir
-if [[ $SUB_DIR == "" ]]; then
-  echo "missing argument: <subdir>"
-  exit 1
-fi
+The [post-processing script](scripts/vs_post.sh) writes all docking scores into one file `vs_scores.txt` and removes all result files of ligands with scores > -8.0. In addition, all remaining result files are put into one folder and the sub-folders are removed.
 
-LIG_DIR=/scratch/xxx/vs/lig
-OUT_DIR=/scratch/xxx/vs/out
+The post-processing job can be started with:
 
-LFILES=($LIG_DIR/$LIGANDS/$SUB_DIR/lig*.pdbqt)
-NUM_LIGS=${#LFILES[@]}
-SIZE=$((NUM_LIGS / NUM_JOBS + 1))
+    bsub -J "vspost" -w 'ended(vsscr)' -W "24:00" -R scratch -o /home/users/xxx/vs/jobout/vspost_%J.txt -e /home/users/xxx/vs/jobout/vspost_%J.txt ./vs_post.sh
 
-mkdir -p $OUT_DIR/$SUB_DIR
-
-# sleep $((LSB_JOBINDEX * 5))
-# zero-based indexing!
-FIRST=$(((LSB_JOBINDEX - 1) * SIZE))
-LAST=$((LSB_JOBINDEX * SIZE - 1))
-if [ $LAST -ge $NUM_LIGS ]; then
-  LAST=$((NUM_LIGS - 1))
-fi
-
-for ((i=FIRST;i<=LAST;i++)); do
-  LF=${LFILES[$i]}
-  BN=$(basename $LF .pdbqt)
-  smina -r $REC_DIR/$REC.pdbqt -l $LF --autobox_add 6 \
-        --autobox_ligand $REF_LIG.pdbqt --num_modes 3 \
-        --scoring vinardo \
-        -o $OUT_DIR/$SUB_DIR/$BN.pdbqt -q --cpu 1 \
-        --log $OUT_DIR/$SUB_DIR/$BN.log
-done
-```
-
-#### Starting the Job
-
-    bsub -J "vsscr[1-200]" -w 'done(xxx)' -W "30:00" -R scratch -o /home/users/xxx/vs/jobout/vsscr_%J-%I.txt -e /home/users/xxx/vs/jobout/vsscr_%J-%I.txt ./vs_screen.sh 1  # ligand set subdir
+This will automatically start the job when the last screening job has finished.
 
 ### Analyse the Results (on the Cluster)
 
@@ -172,31 +136,13 @@ Scanning Smina log files.
 
 This can also be done locally, but for that the complete output from the virtual screen has to be downloaded.  
 
-vs_scan_logs.sh:
+see [vs_scan_logs.sh](scripts/vs_scan_logs.sh):
 
-```Bash
-#!/bin/bash -l
-# usage: bsub <bsub options> ./vs_scan_logs.sh
+The scanning job can be started with:
 
-RES_DIR="vs_clpp_comas"  # result dir
-VS_DIR=/scratch/apahl/vs
+    bsub -J "vsscan" -w 'ended(vs_scr)' -W "24:00" -R scratch -o /home/users/xxx/vs/jobout/vsscan_%J.txt -e /home/users/xxx/vs/jobout/vsscan_%J.txt ./vs_scan_logs.sh
 
-cd $VS_DIR
-mkdir -p $RES_DIR
-
-for i in out/*; do
-  echo $i...
-  # collect the 100 best scoring compounds for each ligand heavy atom count
-  # from 22 - 35 heavy atoms
-  smina_scan_logs --topha 100 --maxha 35 --minha 22 $i $RES_DIR
-done
-```
-
-#### Starting the Job
-
-    bsub -J "vsscan" -w 'done()' -W "24:00" -R scratch -o /home/users/xxx/vs/jobout/vsscan_%J.txt -e /home/users/xxx/vs/jobout/vsscan_%J.txt ./vs_scan_logs.sh
-
-#### Further Example Uses of `smina_scan_logs`
+#### Example Uses of `smina_scan_logs`
 
     smina_scan_logs --highest 45 --maxle "-1.10" --sortby le vs vs_le
 
