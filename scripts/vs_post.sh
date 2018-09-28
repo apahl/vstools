@@ -11,7 +11,7 @@ cd $OUT_DIR
 echo -e "Ligand\tScore" > vs_scores.txt
 
 for d in *; do
-  cd $d
+  cd $OUT_DIR/$d
   for f in *.log; do
     LIG=$(basename $f .log)
     VALUES=($(tail -n3 $f | grep -i "1    ")); v=${VALUES[1]}; echo -e "$LIG\t$v" >> ../vs_scores.txt
@@ -19,6 +19,5 @@ for d in *; do
       cp $LIG.* ../
     fi
   done
-  cd ..
-  # rm -rf $d  # removal of sub-dirs disabled while testing
+  # rm -rf $OUT_DIR/$d  # removal of sub-dirs disabled while testing
 done
