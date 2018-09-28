@@ -1,13 +1,13 @@
-package main
+package fileutls
 
 import (
 	"io"
 	"os"
 )
 
-// copy the src file to dst. Any existing file will be overwritten and will not
+// Copy the src file to dst. Any existing file will be overwritten and will not
 // copy file attributes.
-func copy(src, dst string) error {
+func Copy(src, dst string) error {
 	in, err := os.Open(src)
 	if err != nil {
 		return err

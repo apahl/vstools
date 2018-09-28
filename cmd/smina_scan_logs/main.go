@@ -16,6 +16,7 @@ import (
 	"github.com/korovkin/limiter"
 
 	"github.com/apahl/vstools/internal/calculators"
+	"github.com/apahl/vstools/internal/fileutls"
 
 	"github.com/apahl/utls"
 )
@@ -241,7 +242,7 @@ func copyLigands(scoreDir, resDir string, scores []Score) {
 		for _, ext := range []string{".pdbqt", ".log"} {
 			src := filepath.Join(scoreDir, fmt.Sprintf("%s%s", s.id, ext))
 			dst := filepath.Join(resDir, fmt.Sprintf("%s%s", s.id, ext))
-			err := copy(src, dst)
+			err := fileutls.Copy(src, dst)
 			utls.QuitOnError(err)
 		}
 	}

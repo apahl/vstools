@@ -11,13 +11,6 @@ cd $OUT_DIR
 echo -e "Ligand\tScore" > vs_scores.txt
 
 for d in *; do
-  cd $OUT_DIR/$d
-  for f in *.log; do
-    LIG=$(basename $f .log)
-    VALUES=($(tail -n3 $f | grep -i "1    ")); v=${VALUES[1]}; echo -e "$LIG\t$v" >> ../vs_scores.txt
-    if (( $(echo "$v < -8.0" | bc -l) )); then
-      cp $LIG.* ../
-    fi
-  done
+  smina_post $OUT_DIR/$d >> vs_scores.txt
   # rm -rf $OUT_DIR/$d  # removal of sub-dirs disabled while testing
 done
