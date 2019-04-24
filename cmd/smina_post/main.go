@@ -1,6 +1,6 @@
 // smina_post
 // Writes all docking scores into one file `vs_scores.txt`
-// Result files with scores < -8.0 are put into one folder
+// Result files with scores <= -8.5 are put into the current dir
 // parallel version with max. 5 goroutines - fastest with no ReadFile errors.
 package main
 
@@ -26,7 +26,7 @@ type Score struct {
 }
 
 const (
-	minScore      = -8.0
+	minScore      = -8.5
 	numGoroutines = 5
 )
 
@@ -87,7 +87,7 @@ func scanScores(scoreDir string) {
 			limit.Execute(func() {
 				score := getScore(scoreDir, logFile)
 				fmt.Printf("%s\t%.1f\n", score.ID, score.Value)
-				if score.Value < minScore {
+				if score.Value <= minScore {
 					copyLigand(score.ID, scoreDir, "./")
 				}
 			})

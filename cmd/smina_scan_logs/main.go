@@ -72,7 +72,7 @@ func init() {
 	}
 	flag.IntVar(&flagTopN, "top", 0, "get n ligands with lowest values\n(outcome depends on sorting property, see --sortby)")
 	flag.IntVar(&flagTopNperHA, "topha", 0, "get n ligands with lowest values per heavy atom\n(outcome depends on sorting property, see --sortby)")
-	flag.Float64Var(&flagMaxValue, "maxval", 0.0, "get ligands with valaues lower than n\n(outcome depends on sorting property, see --sortby)")
+	flag.Float64Var(&flagMaxValue, "maxval", 0.0, "get ligands with values lower than n\n(outcome depends on sorting property, see --sortby)")
 	flag.IntVar(&flagNumHAmin, "minha", 0, "limit to ligands with min n heavy atoms\n(allows exclusion of fragment-like hits)")
 	flag.IntVar(&flagNumHAmax, "maxha", numHAmaxDefault, "limit to ligands with max n heavy atoms")
 	flag.StringVar(&flagSortBy, "sortby", "score", "property by which to sort the ligands\n(score (default) or le (Ligand Efficiency))")
