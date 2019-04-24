@@ -27,7 +27,7 @@ The generated scores.txt has to be put in the folder and a `as.pdb` containing t
 
 ![report](res/report.png)
 
-[example file](https://apahl.github.io/vstools/master/res/report_01.html)
+[example file](https://apahl.github.io/vstools/res/report_01.html)
 
 ## Requirements
 
